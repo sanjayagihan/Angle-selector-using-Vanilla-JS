@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angle Selector</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 350px;
+        }
+        .container input[type="number"] {
+            width: 60px;
+            padding: 5px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 16px;
+        }
+        .slider {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .slider::-webkit-slider-thumb {
+            background-color: #007bff;
+            border: 1px solid #007bff;
+            border-radius: 50%;
+            cursor: pointer;
+            height: 20px;
+            width: 20px;
+        }
+        .slider::-moz-range-thumb {
+            background-color: #007bff;
+            border: 1px solid #007bff;
+            border-radius: 50%;
+            cursor: pointer;
+            height: 20px;
+            width: 20px;
+        }
+        .radio-buttons {
+            display: flex;
+            justify-content: space-around;
+            gap: 10px;
+        }
+        .radio-buttons label {
+            font-size: 16px;
+            cursor: pointer;
+            color: #333;
+        }
+        .radio-buttons input[type="radio"] {
+            margin-right: 5px;
+            cursor: pointer;
+        }
+        .radio-buttons input[type="radio"]:checked + label {
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Angle Selector</h2>
+        <input type="number" id="angleInput" value="0" min="0" max="360">
+        <input type="range" id="angleSlider" class="slider" min="0" max="360" value="0">
+        <div class="radio-buttons">
+            <label><input type="radio" name="preset" value="0"> 0</label>
+            <label><input type="radio" name="preset" value="45"> 45</label>
+            <label><input type="radio" name="preset" value="60"> 60</label>
+            <label><input type="radio" name="preset" value="90"> 90</label>
+            <label><input type="radio" name="preset" value="180"> 180</label>
+        </div>
+    </div>
+
+    <script>
+        const angleInput = document.getElementById('angleInput');
+        const angleSlider = document.getElementById('angleSlider');
+        const radioButtons = document.querySelectorAll('input[name="preset"]');
+
+        function updateAll(value) {
+            value = (value % 360 + 360) % 360; // Ensure value is between 0 and 360
+            angleInput.value = value;
+            angleSlider.value = value;
+
+            radioButtons.forEach(button => {
+                button.checked = parseInt(button.value) === value;
+            });
+        }
+
+        angleInput.addEventListener('input', (e) => {
+            let value = parseInt(e.target.value);
+            updateAll(value);
+        });
+
+        angleSlider.addEventListener('input', (e) => {
+            updateAll(parseInt(e.target.value));
+        });
+
+        radioButtons.forEach(button => {
+            button.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    updateAll(parseInt(e.target.value));
+                }
+            });
+        });
+    </script>
+</body>
+</html>
